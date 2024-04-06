@@ -13,7 +13,7 @@ const FeaturedProducts = () => {
         setCurrentPage(page);
     };
     const adPageQuery = useQuery(['pages', currentPage], () =>
-        getObjectsByPageNumber(currentPage, 9)
+        getObjectsByPageNumber(currentPage, 1   )
     );
 
     if (adPageQuery.isError) {

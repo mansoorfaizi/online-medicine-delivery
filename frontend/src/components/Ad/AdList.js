@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Breadcrumbs,
@@ -21,91 +21,24 @@ const AdList = () => {
     const handlePageChange = (event, page) => {
         setCurrentPage(page);
     };
-    const [searchInfo, searchInfoData] = useOutletContext();
-    if (searchInfo) {
-        const { data, error, isError, isLoading, isSuccess } = useQuery(
-            ['search', searchInfoData],
-            () => {
-                return searchObject('ads', searchInfoData);
-            }
+    const { data, isError, isLoading, isSuccess, refetch } = useQuery(
+        ['pages', currentPage],
+        () => getObjectsByPageNumber(currentPage, id)
+    );
+    useEffect(() => {
+        refetch();
+    }, [id, refetch]);
+    if (isLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress />
+            </Box>
         );
-        console.log(data);
-        if (isError) {
-            return <div>{error.message} Ad Not Found</div>;
-        }
-        if (isLoading) {
-            return (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <CircularProgress />
-                </Box>
-            );
-        }
-        if (error) {
-            return <div>Not loaded</div>;
-        }
-        if (isSuccess) {
-            if (data.data.length == 0) {
-                return <div>There is no such ad</div>;
-            } else {
-                return (
-                    <Container>
-                        <Breadcrumbs aria-label="breadcrumb" sx={{ mt: 3 }}>
-                            <Link
-                                to={'/'}
-                                style={{
-                                    textDecoration: 'none',
-                                    color: '#76bc21',
-                                }}
-                            >
-                                <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                                Home
-                            </Link>
-                            <Typography
-                                sx={{ display: 'flex', alignItems: 'center' }}
-                                color="text.primary"
-                            >
-                                Search
-                            </Typography>
-                        </Breadcrumbs>
-                        <Typography
-                            variant="h6"
-                            color={'#76bc21'}
-                            mt={3}
-                            pl={1}
-                            sx={{ borderLeft: '3px solid #76bc21' }}
-                        >
-                            Search
-                        </Typography>
-                        <Grid container>
-                            {data.data['results'].map((ad) => (
-                                <Grid item key={ad.id}>
-                                    <Link
-                                        to={`/ad/detail/${ad.id}/`}
-                                        style={{ textDecoration: 'none' }}
-                                    >
-                                        <AdCard ad={ad} />
-                                    </Link>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Container>
-                );
-            }
-        }
-    } else {
-        const adPageQuery = useQuery(['pages', currentPage], () =>
-            getObjectsByPageNumber(currentPage, id)
-        );
-        if (adPageQuery.isError) {
-            return <div>{adPageQuery.error.message} some error</div>;
-        }
-        if (adPageQuery.isLoading) {
-            return (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <CircularProgress />
-                </Box>
-            );
-        }
+    }
+    if (isError) {
+        return <Typography>occurred an error</Typography>;
+    }
+    if (isSuccess) {
         return (
             <Container>
                 <Box>
@@ -138,7 +71,9 @@ const AdList = () => {
                         {name}
                     </Typography>
                     <Grid container>
-                        {adPageQuery.data['results'].map((ad) => (
+                        {{ data, isError, isLoading, isSuccess }.data[
+                            'results'
+                        ].map((ad) => (
                             <Grid
                                 item
                                 key={ad.id}
@@ -161,9 +96,13 @@ const AdList = () => {
                                 mb: 10,
                             }}
                         >
-                            {adPageQuery.data.count ? (
+                            {{ data, isError, isLoading, isSuccess }.data
+                                .count ? (
                                 <Pagination
-                                    count={adPageQuery.data.total_pages}
+                                    count={
+                                        { data, isError, isLoading, isSuccess }
+                                            .data.total_pages
+                                    }
                                     page={currentPage}
                                     onChange={handlePageChange}
                                     variant="outlined"

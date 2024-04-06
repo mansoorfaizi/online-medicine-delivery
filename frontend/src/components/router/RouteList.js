@@ -1,5 +1,11 @@
-import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+    BrowserRouter,
+    Navigate,
+    Route,
+    Routes,
+    useLocation,
+} from 'react-router-dom';
 import App from '../App';
 import Home from '../layout/Home';
 import AdList from '../Ad/AdList';
@@ -40,10 +46,30 @@ import YearReport from '../admin/components/report/YearReport';
 import PrescriptionDetails from '../admin/components/order/PrescriptionDetails';
 import FilterOrder from '../admin/components/filter order/FilterOrder';
 
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        // Smooth scrolling animation
+        const scrollToTop = () => {
+            const c =
+                document.documentElement.scrollTop || document.body.scrollTop;
+            if (c > 0) {
+                window.requestAnimationFrame(scrollToTop);
+                window.scrollTo(0, c - c / 8);
+            }
+        };
+        scrollToTop();
+    }, [pathname]);
+
+    return null;
+};
+
 const RouteList = () => {
     const myData = useSelector((state) => state.user);
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route path="/" element={<Home />} />
