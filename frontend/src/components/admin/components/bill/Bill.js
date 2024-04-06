@@ -88,7 +88,7 @@ const Bill = ({ Order }) => {
                         >
                             <Box
                                 component="img"
-                                src="http://localhost:8000/frontend/static/images/logo/header.png"
+                                src={`${process.env.IMAGE_URL}images/logo/header.png`}
                                 sx={{
                                     height: {
                                         xl: '60px',

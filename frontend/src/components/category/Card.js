@@ -1,11 +1,29 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import MedicationIcon from '@mui/icons-material/Medication';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import VaccinesIcon from '@mui/icons-material/Vaccines';
+import HealingIcon from '@mui/icons-material/Healing';
+import BabyChangingStationIcon from '@mui/icons-material/BabyChangingStation';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
+import EarbudsIcon from '@mui/icons-material/Earbuds';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 
 const Card = (props) => {
     const [open, setOpen] = useState(null);
     const [openIcon, setOpenIcon] = useState(null);
+
+    let icon;
+    switch (props.ad.name) {
+        case 'Medicine':
+            icon = <VaccinesIcon />;
+            break;
+        case 'Baby & Mother Care':
+            icon = <HealingIcon />;
+            break;
+    }
+
     return (
         <Grid
             onMouseOver={() => {
@@ -45,7 +63,7 @@ const Card = (props) => {
                     borderRadius: 2,
                 }}
             >
-                {props.ad.icon}
+                {icon}
             </Box>
             {open ? (
                 <Typography

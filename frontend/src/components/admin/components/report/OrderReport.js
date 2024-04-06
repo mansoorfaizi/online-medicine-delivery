@@ -28,7 +28,7 @@ const OrderReport = () => {
         e.preventDefault();
         try {
             const response = await axios.get(
-                `http://localhost:8000/api/total-selling-price/?date=${orderDate}`
+                `${process.env.BASE_URL}total-selling-price/?date=${orderDate}`
             );
             console.log(response);
             if (response.data.total_price) {

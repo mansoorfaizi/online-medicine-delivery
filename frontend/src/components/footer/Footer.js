@@ -54,7 +54,7 @@ const Footer = () => {
                     <Box>
                         <Link to={'/'}>
                             <img
-                                src="http://localhost:8000/frontend/static/images/logo/footer.png"
+                                src={`${process.env.IMAGE_URL}images/logo/footer.png`}
                                 style={{
                                     height: '100px',
                                     width: '400px',

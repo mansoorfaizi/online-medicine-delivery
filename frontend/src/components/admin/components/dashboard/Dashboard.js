@@ -12,27 +12,27 @@ const Dashboard = () => {
     const [completeOrderCount, setCompleteOrderCount] = useState(0);
     const [cancelOrderCount, setCanceledOrderCount] = useState(0);
     useEffect(() => {
-        fetch('http://localhost:8000/api/user/user-count/')
+        fetch(`${process.env.AUTHENTICATION_URL}/user-count/`)
             .then((response) => response.json())
             .then((data) => setUserCount(data.count));
     }, []);
     useEffect(() => {
-        fetch('http://localhost:8000/api/total-orders/')
+        fetch(`${process.env.BASE_URL}total-orders/`)
             .then((response) => response.json())
             .then((data) => setOrderCount(data.total_order));
     }, []);
     useEffect(() => {
-        fetch('http://localhost:8000/api/total-pending-orders/')
+        fetch(`${process.env.BASE_URL}total-pending-orders/`)
             .then((response) => response.json())
             .then((data) => setPendingOrderCount(data.total_pending_order));
     }, []);
     useEffect(() => {
-        fetch('http://localhost:8000/api/total-complete-orders/')
+        fetch(`${process.env.BASE_URL}total-complete-orders/`)
             .then((response) => response.json())
             .then((data) => setCompleteOrderCount(data.total_complete_order));
     }, []);
     useEffect(() => {
-        fetch('http://localhost:8000/api/total-cancel-orders/')
+        fetch(`${process.env.BASE_URL}total-cancel-orders/`)
             .then((response) => response.json())
             .then((data) => setCanceledOrderCount(data.total_cancel_order));
     }, []);

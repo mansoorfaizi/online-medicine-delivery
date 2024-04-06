@@ -29,7 +29,7 @@ const YearReport = () => {
         e.preventDefault();
         try {
             const response = await axios.get(
-                'http://localhost:8000/api/range-total-selling-price/',
+                `${process.env.BASE_URL}range-total-selling-price/`,
                 {
                     params: {
                         start_date: startDate,

@@ -1,32 +1,27 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  entry: "./src/index.js",
-  output: {
-    path: path.resolve(__dirname, "./static/js"),
-    filename: "[name].js",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
-      },
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, './static/js'),
+        filename: '[name].js',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
+            },
+        ],
+    },
+    optimization: {
+        minimize: true,
+    },
+    plugins: [
+        new Dotenv(), // Load environment variables from .env file
     ],
-  },
-  optimization: {
-    minimize: true,
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("development"),
-      },
-    }),
-  ],
 };

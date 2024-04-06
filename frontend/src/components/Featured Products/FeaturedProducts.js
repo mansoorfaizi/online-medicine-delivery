@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import AdCard from '../Ad/AdCard';
 import { useTranslation } from 'react-i18next';
+import NotFoundData from '../example/NotFoundData';
 
 const FeaturedProducts = () => {
     const { t: translate } = useTranslation();
@@ -12,21 +13,22 @@ const FeaturedProducts = () => {
     const handlePageChange = (event, page) => {
         setCurrentPage(page);
     };
-    const adPageQuery = useQuery(['pages', currentPage], () =>
-        getObjectsByPageNumber(currentPage, 1   )
+    const { data, isLoading, isError, isSuccess, error } = useQuery(
+        ['pages', currentPage],
+        () => getObjectsByPageNumber(currentPage, 1)
     );
 
-    if (adPageQuery.isError) {
-        return <Typography variant="h5">{adPageQuery.error} </Typography>;
+    if (isError) {
+        return <Typography variant="h5">{error} </Typography>;
     }
-    if (adPageQuery.isLoading) {
+    if (isLoading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
             </Box>
         );
     }
-    if (adPageQuery.isSuccess) {
+    if (isSuccess) {
         return (
             <Box
                 sx={{
@@ -51,26 +53,34 @@ const FeaturedProducts = () => {
                                 xs: 'black',
                             },
                             fontSize: { lg: '35px', xs: '20px' },
-                            fontWeight: { xl: 'bold', lg: 'bold', md: 'bold' },
+                            fontWeight: {
+                                xl: 'bold',
+                                lg: 'bold',
+                                md: 'bold',
+                            },
                         }}
                     >
                         {translate('Featured Products')}
                     </Typography>
-                    <Grid container>
-                        {adPageQuery.data['results'].map((ad) => (
-                            <Grid
-                                item
-                                key={ad.id}
-                                xl={3}
-                                lg={3}
-                                md={3}
-                                sm={4}
-                                xs={6}
-                            >
-                                <AdCard key={ad.id} ad={ad} />
-                            </Grid>
-                        ))}
-                    </Grid>
+                    {data.results.length === 0 ? (
+                        <NotFoundData type="feature product" />
+                    ) : (
+                        <Grid container>
+                            {data.results.map((ad) => (
+                                <Grid
+                                    item
+                                    key={ad.id}
+                                    xl={3}
+                                    lg={3}
+                                    md={3}
+                                    sm={4}
+                                    xs={6}
+                                >
+                                    <AdCard key={ad.id} ad={ad} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    )}
                     <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
                         <Box
                             sx={{
@@ -79,9 +89,9 @@ const FeaturedProducts = () => {
                                 mt: 5,
                             }}
                         >
-                            {adPageQuery.data.count ? (
+                            {data.count ? (
                                 <Pagination
-                                    count={adPageQuery.data.total_pages}
+                                    count={data.total_pages}
                                     page={currentPage}
                                     onChange={handlePageChange}
                                     variant="outlined"

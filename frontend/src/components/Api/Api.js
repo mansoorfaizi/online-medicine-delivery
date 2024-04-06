@@ -3,8 +3,9 @@ import axios from 'axios';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'XCSRF-TOKEN';
 
+const baseURL = process.env.BASE_URL;
 const Api = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: baseURL,
 });
 
 export const getObjects = async (endPoint) => {

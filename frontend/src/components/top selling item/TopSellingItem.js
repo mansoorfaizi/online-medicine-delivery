@@ -5,6 +5,7 @@ import { getObjects } from '../Api/Api';
 import CircularProgress from '@mui/material/CircularProgress';
 import AdCard from '../Ad/AdCard';
 import { useTranslation } from 'react-i18next';
+import NotFoundData from '../example/NotFoundData';
 
 const TopSellingItem = () => {
     const { t: translate } = useTranslation();
@@ -39,38 +40,46 @@ const TopSellingItem = () => {
                     mt: { xl: 4, lg: 4, md: 3, sm: 1, xs: 1 },
                 }}
             >
-                <Container>
-                    <Typography
-                        sx={{
-                            color: {
-                                xl: '#76bc21',
-                                lg: '#76bc21',
-                                md: '#76bc21',
-                                sm: 'black',
-                                xs: 'black',
-                            },
-                            fontSize: { lg: '35px', xs: '20px' },
-                            fontWeight: { xl: 'bold', lg: 'bold', md: 'bold' },
-                        }}
-                    >
-                        {translate('Top Selling Items')}
-                    </Typography>
-                    <Grid container>
-                        {data.map((ad) => (
-                            <Grid
-                                item
-                                key={ad.id}
-                                xl={3}
-                                lg={3}
-                                md={3}
-                                sm={4}
-                                xs={6}
-                            >
-                                <AdCard key={ad.id} ad={ad} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Container>
+                {data.length === 0 ? (
+                    <NotFoundData type="top-selling" />
+                ) : (
+                    <Container>
+                        <Typography
+                            sx={{
+                                color: {
+                                    xl: '#76bc21',
+                                    lg: '#76bc21',
+                                    md: '#76bc21',
+                                    sm: 'black',
+                                    xs: 'black',
+                                },
+                                fontSize: { lg: '35px', xs: '20px' },
+                                fontWeight: {
+                                    xl: 'bold',
+                                    lg: 'bold',
+                                    md: 'bold',
+                                },
+                            }}
+                        >
+                            {translate('Top Selling Items')}
+                        </Typography>
+                        <Grid container>
+                            {data.map((ad) => (
+                                <Grid
+                                    item
+                                    key={ad.id}
+                                    xl={3}
+                                    lg={3}
+                                    md={3}
+                                    sm={4}
+                                    xs={6}
+                                >
+                                    <AdCard key={ad.id} ad={ad} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Container>
+                )}
             </Box>
         );
     }
