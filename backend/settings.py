@@ -148,7 +148,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "project120project@gmail.com"
 EMAIL_HOST_PASSWORD = "vrnnyyjeaezfokou"
 
-STATIC_URL = "frontend/static/"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ("http://localhost:8000",)
